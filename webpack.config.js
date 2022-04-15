@@ -1,6 +1,7 @@
 // webpack.config.js
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: "./src/index.ts", // 번들링 시작 위치
@@ -24,6 +25,7 @@ module.exports = {
           loader: "ts-loader",
         },
       },
+      { test: /\.css$/i, use: [MiniCssExtractPlugin.loader, "css-loader"] },
     ],
   },
   resolve: {
@@ -34,10 +36,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html", // 템플릿 위치
     }),
+    new MiniCssExtractPlugin(),
   ],
   devServer: {
     host: "localhost", // live-server host 및 port
     port: 5500,
   },
+  output: { path: path.join(__dirname, "dist"), filename: "app.js" },
   mode: "development", // 번들링 모드 development / production
 };
